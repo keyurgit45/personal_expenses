@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:folder_file_saver/folder_file_saver.dart';
+import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../models/transaction.dart' as t;
@@ -72,7 +76,9 @@ CREATE TABLE ${t.tableTransactions} (
 
     const orderBy = '${t.TransactionFields.date} DESC';
     final map = await db.query(t.tableTransactions,
-        orderBy: orderBy, where: '${t.TransactionFields.type} = ?', whereArgs: ['Expense']);
+        orderBy: orderBy,
+        where: '${t.TransactionFields.type} = ?',
+        whereArgs: ['Expense']);
 
     if (map.isNotEmpty) {
       return map.map((e) => t.Transaction.fromJson(e)).toList();
@@ -94,8 +100,8 @@ CREATE TABLE ${t.tableTransactions} (
           whereArgs: [d[i]['date']]);
       lst.add({
         'date': DateTime.parse(d[i]['date'] as String),
-        'transactions': List.generate(
-            transactions.length, (index) => t.Transaction.fromJson(transactions[index])),
+        'transactions': List.generate(transactions.length,
+            (index) => t.Transaction.fromJson(transactions[index])),
       });
     }
     if (lst.isEmpty) {
@@ -190,5 +196,19 @@ CREATE TABLE ${t.tableTransactions} (
   Future close() async {
     final db = await instance.database;
     db.close();
+  }
+
+  Future saveToDevice() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'transactions.db');
+    File file = File(path);
+    final res = await FolderFileSaver.saveFileToFolderExt(file.path);
+    if (res != null) {
+      Get.snackbar('Success', "File saved to Documents!",
+          snackPosition: SnackPosition.BOTTOM);
+    } else {
+      Get.snackbar('Error', "Something went wrong!",
+          snackPosition: SnackPosition.BOTTOM);
+    }
   }
 }

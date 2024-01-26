@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personal_expenses/controllers/theme_controller.dart';
+import 'package:personal_expenses/database/transaction_database.dart';
 import 'package:personal_expenses/features/appbar/custom_appbar.dart';
 import '../themes/app_colors.dart';
 import '../features/settings/notification settings/notification_settings.dart';
@@ -17,25 +18,58 @@ class Settings extends StatelessWidget {
       appBar: CustomAppBar('Settings'),
       drawer: CustomNavigationDrawer(),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.height / 30),
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.height / 30),
         child: ListView(
           children: [
             ListTile(
               leading: Icon(
                 Icons.notification_add_rounded,
-                color: themeController.isDarkMode.value ? AppColors.iconColor1Dark : AppColors.iconColor1Light,
+                color: themeController.isDarkMode.value
+                    ? AppColors.iconColor1Dark
+                    : AppColors.iconColor1Light,
               ),
               title: Text(
                 'Notification Settings',
-                style: TextStyle(color: themeController.isDarkMode.value ? AppColors.titleTextColorDark : AppColors.titleTextColorLight),
+                style: TextStyle(
+                    color: themeController.isDarkMode.value
+                        ? AppColors.titleTextColorDark
+                        : AppColors.titleTextColorLight),
               ),
               onTap: (() {
-                Navigator.of(context).push(MaterialPageRoute(builder: ((context) => NotificationSettings())));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: ((context) => NotificationSettings())));
               }),
             ),
             Divider(
               thickness: 1,
-              color: themeController.isDarkMode.value ? AppColors.cardBorderSideColorDark.withOpacity(1) : AppColors.cardBorderSideColorLight,
+              color: themeController.isDarkMode.value
+                  ? AppColors.cardBorderSideColorDark.withOpacity(1)
+                  : AppColors.cardBorderSideColorLight,
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.save_outlined,
+                color: themeController.isDarkMode.value
+                    ? AppColors.iconColor1Dark
+                    : AppColors.iconColor1Light,
+              ),
+              title: Text(
+                'Save DB to local',
+                style: TextStyle(
+                    color: themeController.isDarkMode.value
+                        ? AppColors.titleTextColorDark
+                        : AppColors.titleTextColorLight),
+              ),
+              onTap: (() async {
+                await TransactionDatabase.instance.saveToDevice();
+              }),
+            ),
+            Divider(
+              thickness: 1,
+              color: themeController.isDarkMode.value
+                  ? AppColors.cardBorderSideColorDark.withOpacity(1)
+                  : AppColors.cardBorderSideColorLight,
             ),
           ],
         ),
