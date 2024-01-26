@@ -38,7 +38,8 @@ class TransactionDataDisplay extends StatelessWidget {
             width: 100,
             child: Container(
               alignment: Alignment.center,
-              margin: const EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 3),
+              margin: const EdgeInsets.only(
+                  top: 10, bottom: 10, right: 15, left: 3),
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 color: transaction.type == "Expense"
@@ -116,21 +117,28 @@ class TransactionDataDisplay extends StatelessWidget {
           IconButton(
             onPressed: (() {
               newTransactionController.currDate.value = transaction.date;
-              newTransactionController.accountChoice.value = transaction.account == 'Cash'
-                  ? 1
-                  : transaction.account == 'UPI'
-                      ? 2
-                      : 3;
-              newTransactionController.typeChoice.value = transaction.type == 'Income' ? 1 : 2;
-              newTransactionController.titleController.value.text = transaction.title;
-              newTransactionController.amountController.value.text = transaction.amount.toString();
-              newTransactionController.currCategoryTitle.value = transaction.category;
-              newTransactionController.currCategoryIconCode.value = transaction.iconCode;
-              newTransactionController.currCategoryType.value = transaction.type;
+              newTransactionController.accountChoice.value =
+                  transaction.account == 'Cash'
+                      ? 1
+                      : transaction.account == 'UPI'
+                          ? 2
+                          : 3;
+              newTransactionController.typeChoice.value =
+                  transaction.type == 'Income' ? 1 : 2;
+              newTransactionController.titleController.value.text =
+                  transaction.title;
+              newTransactionController.amountController.value.text =
+                  transaction.amount.toString();
+              newTransactionController.currCategoryTitle.value =
+                  transaction.category;
+              newTransactionController.currCategoryIconCode.value =
+                  transaction.iconCode;
+              newTransactionController.currCategoryType.value =
+                  transaction.type;
               showDialog(
                   context: context,
-                  builder: (BuildContext context) =>
-                      homePageController.editTransaction(context, transaction.id!));
+                  builder: (BuildContext context) => homePageController
+                      .editTransaction(context, transaction.id!));
             }),
             color: themeController.isDarkMode.value
                 ? AppColors.iconColor1Dark
@@ -139,18 +147,46 @@ class TransactionDataDisplay extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              if (homePageController.userTransactions.length == 1) {
-                homePageController.deleteTransaction(transaction.id as int);
-                homePageController.userTransactions.value = [];
-              } else {
-                homePageController.deleteTransaction(transaction.id as int);
-              }
+              showConfirmDialog(context);
             },
             color: AppColors.deleteIconColor,
             icon: const Icon(Icons.delete_outline_rounded),
           ),
         ],
       ),
+    );
+  }
+
+  void showConfirmDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Action'),
+          content: Text('Are you sure you want to delete?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Perform action when 'Cancel' is pressed
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (homePageController.userTransactions.length == 1) {
+                  homePageController.deleteTransaction(transaction.id as int);
+                  homePageController.userTransactions.value = [];
+                } else {
+                  homePageController.deleteTransaction(transaction.id as int);
+                }
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Confirm'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

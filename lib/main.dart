@@ -30,15 +30,21 @@ void callbackDispatcher() {
     final appData = GetStorage();
     switch (task) {
       case taskName1:
-        if (await Permission.sms.status.isGranted && appData.read(showNewTransactionNotification)) {
+        if (await Permission.sms.status.isGranted &&
+            appData.read(showNewTransactionNotification)) {
           final SmsQuery query = SmsQuery();
-          appData.writeIfNull(lastTimeSMSChecked,
-              DateTime.now().subtract(const Duration(hours: 24)).toIso8601String());
+          appData.writeIfNull(
+              lastTimeSMSChecked,
+              DateTime.now()
+                  .subtract(const Duration(hours: 24))
+                  .toIso8601String());
           DateTime stopTime = DateTime.parse(appData.read(lastTimeSMSChecked));
           // DateTime stopTime = DateTime.now().subtract(const Duration(hours: 24));
           SmsController smsController = Get.put(SmsController());
-          List<BlockedSender> blockedSenderList = smsController.blockedSendersList;
-          List<Category>? categoryList = await smsController.getNotificationCategories();
+          List<BlockedSender> blockedSenderList =
+              smsController.blockedSendersList;
+          List<Category>? categoryList =
+              await smsController.getNotificationCategories();
 
           final messages = await query.querySms(
             kinds: [SmsQueryKind.inbox],
@@ -74,11 +80,13 @@ void main() async {
     isInDebugMode: false,
   );
 
-  AwesomeNotifications().initialize('resource://drawable/res_notification_icon', [
+  AwesomeNotifications()
+      .initialize('resource://drawable/res_notification_icon', [
     NotificationChannel(
       channelKey: 'new_sms_detected',
       channelName: 'New Transaction Detected',
-      channelDescription: 'Notification which is shown when a new transaction is detected.',
+      channelDescription:
+          'Notification which is shown when a new transaction is detected.',
       defaultColor: const Color.fromRGBO(122, 195, 168, 1),
     ),
     NotificationChannel(
@@ -89,28 +97,28 @@ void main() async {
     ),
   ]);
 
-  AwesomeNotifications().actionStream.listen((event) async {
-    HomePageController homePageController = Get.put(HomePageController());
-    if (event.buttonKeyPressed != 'Other') {
-      DateTime date = DateTime.parse(event.payload!['date']!);
-      await TransactionDatabase.instance.create(
-        Transaction(
-          title: event.buttonKeyPressed,
-          amount: double.parse(event.payload!['amount']!),
-          date: DateTime(date.year, date.month, date.day),
-          type: event.payload!['type']!,
-          account: event.payload!['account']!,
-          category: event.buttonKeyPressed,
-          iconCode: int.parse(event.payload![event.buttonKeyPressed]!),
-          categoryType: event.payload!['type']!,
-        ),
-      );
-      homePageController.getDatewiseGroupedTransactions();
-      homePageController.incomeAndExpenseMonthlyTotal();
-    } else {
-      homePageController.addOtherTransactionFromNotification(event.payload!);
-    }
-  });
+  // AwesomeNotifications().actionStream.listen((event) async {
+  //   HomePageController homePageController = Get.put(HomePageController());
+  //   if (event.buttonKeyPressed != 'Other') {
+  //     DateTime date = DateTime.parse(event.payload!['date']!);
+  //     await TransactionDatabase.instance.create(
+  //       Transaction(
+  //         title: event.buttonKeyPressed,
+  //         amount: double.parse(event.payload!['amount']!),
+  //         date: DateTime(date.year, date.month, date.day),
+  //         type: event.payload!['type']!,
+  //         account: event.payload!['account']!,
+  //         category: event.buttonKeyPressed,
+  //         iconCode: int.parse(event.payload![event.buttonKeyPressed]!),
+  //         categoryType: event.payload!['type']!,
+  //       ),
+  //     );
+  //     homePageController.getDatewiseGroupedTransactions();
+  //     homePageController.incomeAndExpenseMonthlyTotal();
+  //   } else {
+  //     homePageController.addOtherTransactionFromNotification(event.payload!);
+  //   }
+  // });
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
@@ -127,7 +135,8 @@ class MyApp extends StatelessWidget {
 
   final ThemeController _themeController = Get.put(ThemeController());
 
-  final NewTransactionController _newTransactionController = Get.put(NewTransactionController());
+  final NewTransactionController _newTransactionController =
+      Get.put(NewTransactionController());
 
   final SmsController _smsController = Get.put(SmsController());
 
@@ -135,13 +144,15 @@ class MyApp extends StatelessWidget {
   final HomePageController _homePageController = Get.put(HomePageController());
 
   // ignore: unused_field
-  final AccountInfoController _accountInfoController = Get.put(AccountInfoController());
+  final AccountInfoController _accountInfoController =
+      Get.put(AccountInfoController());
 
   @override
   Widget build(BuildContext context) {
     if (_themeController.appData.read(darkmode) == null) {
       _themeController.appData.writeIfNull(darkmode, true);
-      _themeController.appData.writeIfNull(showNewTransactionNotification, true);
+      _themeController.appData
+          .writeIfNull(showNewTransactionNotification, true);
       _themeController.appData.writeIfNull(showReminderNotification, true);
       _newTransactionController.addDefaultCategories();
       _smsController.addNotificationCategories();
@@ -161,10 +172,13 @@ class MyApp extends StatelessWidget {
       );
     }
     return SimpleBuilder(builder: (_) {
-      _themeController.isDarkMode.value = _themeController.appData.read(darkmode);
+      _themeController.isDarkMode.value =
+          _themeController.appData.read(darkmode);
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: _themeController.isDarkMode.value ? AppThemes.darkTheme : AppThemes.lightTheme,
+        theme: _themeController.isDarkMode.value
+            ? AppThemes.darkTheme
+            : AppThemes.lightTheme,
         title: 'Personal Expenses',
         home: const MyHomePage(),
       );

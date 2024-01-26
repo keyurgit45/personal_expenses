@@ -13,7 +13,10 @@ int createUniqueId() {
 
 bool smsFilter(SmsMessage message, blockedSenderList) {
   String lst = message.body!.toLowerCase();
-  if ((lst.contains('credited') || lst.contains('debited') || lst.contains('transaction')) &&
+  if ((lst.contains('credited') ||
+          lst.contains('debited') ||
+          lst.contains('transaction') ||
+          lst.contains('transfer')) &&
       !lst.contains('recharge') &&
       !lst.contains('sale') &&
       !lst.contains('expire') &&
@@ -70,7 +73,8 @@ Future<void> showTransactionDetectedNotification(
     } else if (isInt(word)) {
       amount = word;
       break;
-    } else if (exp.hasMatch(word) && (word.contains('rs') || word.contains('inr'))) {
+    } else if (exp.hasMatch(word) &&
+        (word.contains('rs') || word.contains('inr'))) {
       var extracted = exp.firstMatch(word);
       amount = extracted!.group(0)!;
       if (amount[0] == '.') {
@@ -86,8 +90,10 @@ Future<void> showTransactionDetectedNotification(
       'date': sms.date!.toString(),
       'type': checkCreditedDebited(smsBody),
       'account': (smsBody.contains('upi') ? 'UPI' : 'DebitCard'),
-      filteredCategoryList[0].title: filteredCategoryList[0].iconCode.toString(),
-      filteredCategoryList[1].title: filteredCategoryList[1].iconCode.toString(),
+      filteredCategoryList[0].title:
+          filteredCategoryList[0].iconCode.toString(),
+      filteredCategoryList[1].title:
+          filteredCategoryList[1].iconCode.toString(),
       'Other': Icons.mail_outline_rounded.codePoint.toString(),
     }.toString());
     await AwesomeNotifications().createNotification(
@@ -107,29 +113,34 @@ Future<void> showTransactionDetectedNotification(
           'date': sms.date!.toString(),
           'type': checkCreditedDebited(smsBody),
           'account': (smsBody.contains('upi') ? 'UPI' : 'DebitCard'),
-          filteredCategoryList[0].title: filteredCategoryList[0].iconCode.toString(),
-          filteredCategoryList[1].title: filteredCategoryList[1].iconCode.toString(),
+          filteredCategoryList[0].title:
+              filteredCategoryList[0].iconCode.toString(),
+          filteredCategoryList[1].title:
+              filteredCategoryList[1].iconCode.toString(),
           'Other': Icons.mail_outline_rounded.codePoint.toString(),
         },
       ),
       actionButtons: [
         NotificationActionButton(
-          buttonType: ActionButtonType.Default,
+          actionType: ActionType.Default,
           key: filteredCategoryList[0].title,
           label: filteredCategoryList[0].title,
-          icon: CategoryIcons.notificationIconData[filteredCategoryList[0].iconCode],
+          icon: CategoryIcons
+              .notificationIconData[filteredCategoryList[0].iconCode],
         ),
         NotificationActionButton(
-          buttonType: ActionButtonType.Default,
+          actionType: ActionType.Default,
           key: filteredCategoryList[1].title,
           label: filteredCategoryList[1].title,
-          icon: CategoryIcons.notificationIconData[filteredCategoryList[1].iconCode],
+          icon: CategoryIcons
+              .notificationIconData[filteredCategoryList[1].iconCode],
         ),
         NotificationActionButton(
-          buttonType: ActionButtonType.Default,
+          actionType: ActionType.Default,
           key: 'Other',
           label: 'Other',
-          icon: CategoryIcons.notificationIconData[filteredCategoryList[1].iconCode],
+          icon: CategoryIcons
+              .notificationIconData[filteredCategoryList[1].iconCode],
         ),
       ],
     );

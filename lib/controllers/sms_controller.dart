@@ -68,7 +68,8 @@ class SmsController extends GetxController {
 
   void getPreviousSMS(BlockedSender blockedSender) async {
     var deviceList = await getAllMessagesFromDevice();
-    for (var element in deviceList.where((element) => element.sender == blockedSender.sender)) {
+    for (var element in deviceList
+        .where((element) => element.sender == blockedSender.sender)) {
       await SMSDatabase.instance.create(
         SMS(
           sender: element.sender!,
@@ -136,7 +137,10 @@ class SmsController extends GetxController {
 
   Future<bool> checkMessage(SmsMessage message, List<String>? blockList) async {
     String lst = message.body!.toLowerCase();
-    if ((lst.contains('debited') || lst.contains('credited') || lst.contains('transaction')) &&
+    if ((lst.contains('debited') ||
+            lst.contains('credited') ||
+            lst.contains('transaction') ||
+            lst.contains('transfer')) &&
         !lst.contains('recharge') &&
         !lst.contains('sale') &&
         !lst.contains('expire') &&
@@ -160,11 +164,15 @@ class SmsController extends GetxController {
   }
 
   void addNotificationCategories() {
-    addNotificationCategory(Category(title: 'Food', iconCode: 1, categoryType: 'Expense'));
-    addNotificationCategory(Category(title: 'Recharge', iconCode: 2, categoryType: 'Expense'));
+    addNotificationCategory(
+        Category(title: 'Food', iconCode: 1, categoryType: 'Expense'));
+    addNotificationCategory(
+        Category(title: 'Recharge', iconCode: 2, categoryType: 'Expense'));
 
-    addNotificationCategory(Category(title: 'Salary', iconCode: 17, categoryType: 'Income'));
-    addNotificationCategory(Category(title: 'Investments', iconCode: 18, categoryType: 'Income'));
+    addNotificationCategory(
+        Category(title: 'Salary', iconCode: 17, categoryType: 'Income'));
+    addNotificationCategory(
+        Category(title: 'Investments', iconCode: 18, categoryType: 'Income'));
   }
 
   void addNotificationCategory(Category category) async {

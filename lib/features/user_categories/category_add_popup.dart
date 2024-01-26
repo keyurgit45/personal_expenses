@@ -14,7 +14,8 @@ class CategoryPopUp extends StatelessWidget {
   final int editing;
   final Function changeState;
 
-  CategoryPopUp(this.editing, title, int type, int iconCode, this.changeState, {super.key}) {
+  CategoryPopUp(this.editing, title, int type, int iconCode, this.changeState,
+      {super.key}) {
     categoryController.text = title;
     newTransactionController.typeChoice.value = type;
     newTransactionController.currCategoryIconCode.value = iconCode;
@@ -97,7 +98,8 @@ class CategoryPopUp extends StatelessWidget {
                             builder: ((context) {
                               return AlertDialog(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(8)),
                                   side: BorderSide(
                                       color: themeController.isDarkMode.value
                                           ? AppColors.cardBorderSideColorDark
@@ -105,14 +107,17 @@ class CategoryPopUp extends StatelessWidget {
                                       width: 1),
                                 ),
                                 elevation: 10,
-                                backgroundColor: themeController.isDarkMode.value
+                                backgroundColor: themeController
+                                        .isDarkMode.value
                                     ? AppColors.alertDialogBackgroundColorDark
                                     : AppColors.alertDialogBackgroundColorLight,
                                 content: IconPopUp(),
                               );
                             }));
                       }),
-                      child: newTransactionController.currCategoryIconCode.value == 0
+                      child: newTransactionController
+                                  .currCategoryIconCode.value ==
+                              0
                           ? Text(
                               "Choose Icon",
                               style: TextStyle(
@@ -123,8 +128,8 @@ class CategoryPopUp extends StatelessWidget {
                             )
                           : SvgPicture.asset(
                               height: MediaQuery.of(context).size.height * 0.03,
-                              CategoryIcons
-                                  .iconData[newTransactionController.currCategoryIconCode.value]!,
+                              CategoryIcons.iconData[newTransactionController
+                                  .currCategoryIconCode.value]!,
                               color: themeController.isDarkMode.value
                                   ? AppColors.newTransactionIconColorDark
                                   : AppColors.newTransactionIconColorLight,
@@ -138,22 +143,25 @@ class CategoryPopUp extends StatelessWidget {
               children: [
                 Obx(
                   (() => InkWell(
-                        onTap: (() => newTransactionController.typeChoice.value = 1),
+                        onTap: (() =>
+                            newTransactionController.typeChoice.value = 1),
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.3,
                           height: MediaQuery.of(context).size.height * 0.06,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: newTransactionController.typeChoice.value == 1
-                                  ? AppColors.incomeBorderColor
-                                  : Colors.transparent,
+                              color:
+                                  newTransactionController.typeChoice.value == 1
+                                      ? AppColors.incomeBorderColor
+                                      : Colors.transparent,
                               width: 1,
                             ),
-                            color: newTransactionController.typeChoice.value == 1
-                                ? AppColors.incomeBackgroundColor
-                                : themeController.isDarkMode.value
-                                    ? AppColors.canvasColorDark
-                                    : AppColors.fieldColorLight,
+                            color:
+                                newTransactionController.typeChoice.value == 1
+                                    ? AppColors.incomeBackgroundColor
+                                    : themeController.isDarkMode.value
+                                        ? AppColors.canvasColorDark
+                                        : AppColors.fieldColorLight,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
@@ -163,7 +171,9 @@ class CategoryPopUp extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.arrow_downward_rounded,
-                                  color: newTransactionController.typeChoice.value == 1
+                                  color: newTransactionController
+                                              .typeChoice.value ==
+                                          1
                                       ? AppColors.incomePrimaryColor
                                       : themeController.isDarkMode.value
                                           ? AppColors.iconColor1Dark
@@ -172,7 +182,9 @@ class CategoryPopUp extends StatelessWidget {
                                 Text(
                                   'Income',
                                   style: TextStyle(
-                                    color: newTransactionController.typeChoice.value == 1
+                                    color: newTransactionController
+                                                .typeChoice.value ==
+                                            1
                                         ? AppColors.incomePrimaryColor
                                         : themeController.isDarkMode.value
                                             ? AppColors.subtitleTextColorDark
@@ -187,22 +199,25 @@ class CategoryPopUp extends StatelessWidget {
                 ),
                 Obx(
                   (() => InkWell(
-                        onTap: (() => newTransactionController.typeChoice.value = 2),
+                        onTap: (() =>
+                            newTransactionController.typeChoice.value = 2),
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.3,
                           height: MediaQuery.of(context).size.height * 0.06,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: newTransactionController.typeChoice.value == 2
-                                  ? AppColors.expenseBorderColor
-                                  : Colors.transparent,
+                              color:
+                                  newTransactionController.typeChoice.value == 2
+                                      ? AppColors.expenseBorderColor
+                                      : Colors.transparent,
                               width: 1,
                             ),
-                            color: newTransactionController.typeChoice.value == 2
-                                ? AppColors.expenseBackgroundColor
-                                : themeController.isDarkMode.value
-                                    ? AppColors.canvasColorDark
-                                    : AppColors.fieldColorLight,
+                            color:
+                                newTransactionController.typeChoice.value == 2
+                                    ? AppColors.expenseBackgroundColor
+                                    : themeController.isDarkMode.value
+                                        ? AppColors.canvasColorDark
+                                        : AppColors.fieldColorLight,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
@@ -212,7 +227,9 @@ class CategoryPopUp extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.arrow_upward_rounded,
-                                  color: newTransactionController.typeChoice.value == 2
+                                  color: newTransactionController
+                                              .typeChoice.value ==
+                                          2
                                       ? AppColors.expensePrimaryColor
                                       : themeController.isDarkMode.value
                                           ? AppColors.iconColor1Dark
@@ -221,7 +238,9 @@ class CategoryPopUp extends StatelessWidget {
                                 Text(
                                   'Expense',
                                   style: TextStyle(
-                                    color: newTransactionController.typeChoice.value == 2
+                                    color: newTransactionController
+                                                .typeChoice.value ==
+                                            2
                                         ? AppColors.expensePrimaryColor
                                         : themeController.isDarkMode.value
                                             ? AppColors.subtitleTextColorDark
@@ -267,16 +286,20 @@ class CategoryPopUp extends StatelessWidget {
               if (editing == 0) {
                 newTransactionController.addCategory(Category(
                     title: categoryController.text,
-                    iconCode: newTransactionController.currCategoryIconCode.value,
-                    categoryType:
-                        newTransactionController.typeChoice.value == 1 ? 'Income' : 'Expense'));
+                    iconCode:
+                        newTransactionController.currCategoryIconCode.value,
+                    categoryType: newTransactionController.typeChoice.value == 1
+                        ? 'Income'
+                        : 'Expense'));
               } else {
                 newTransactionController.editCategory(Category(
                     id: editing,
                     title: categoryController.text,
-                    iconCode: newTransactionController.currCategoryIconCode.value,
-                    categoryType:
-                        newTransactionController.typeChoice.value == 1 ? 'Income' : 'Expense'));
+                    iconCode:
+                        newTransactionController.currCategoryIconCode.value,
+                    categoryType: newTransactionController.typeChoice.value == 1
+                        ? 'Income'
+                        : 'Expense'));
               }
               newTransactionController.currCategoryIconCode.value = 0;
               newTransactionController.typeChoice.value = 0;

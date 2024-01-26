@@ -12,6 +12,7 @@ class StatisticsController extends GetxController {
   var endDate = DateTime.now().obs;
 
   var pageState = AppState.loaded.obs;
+  var touchedIndex = 10000.obs;
 
   @override
   void onInit() {
@@ -22,12 +23,14 @@ class StatisticsController extends GetxController {
   Future findCategorySum() async {
     pageState.value = AppState.loading;
     update();
-    categoryList.value = await CategoryDatabase.instance.readExpenseCategories() ?? [];
+    categoryList.value =
+        await CategoryDatabase.instance.readExpenseCategories() ?? [];
     var list = (await TransactionDatabase.instance.readExpenseTransactions());
     if (list != null) {
       categoryWiseList.clear();
       for (var element in list) {
-        if ((element.date.isAfter(startDate.value) && element.date.isBefore(endDate.value)) ||
+        if ((element.date.isAfter(startDate.value) &&
+                element.date.isBefore(endDate.value)) ||
             element.date.isAtSameMomentAs(endDate.value) ||
             element.date.isAtSameMomentAs(startDate.value)) {
           if (categoryWiseList.containsKey(element.category)) {
@@ -46,8 +49,6 @@ class StatisticsController extends GetxController {
       } else {
         pageState.value = AppState.loaded;
         update();
-      
-        
       }
     } else {
       pageState.value = AppState.empty;
@@ -55,7 +56,8 @@ class StatisticsController extends GetxController {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getCategoryAndDatewiseTransactions(String categoryName) async {
+  Future<List<Map<String, dynamic>>> getCategoryAndDatewiseTransactions(
+      String categoryName) async {
     var list = await TransactionDatabase.instance
         .categoryWiseTransactions(categoryName, startDate.value, endDate.value);
     if (list != null) {

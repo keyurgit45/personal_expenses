@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.17.0
+  intl: ^0.19.0
   flutter_svg: ^0.22.0
   cupertino_icons: ^1.0.2
   sqflite: ^2.0.0+3
@@ -27,7 +27,7 @@ dependencies:
   fl_chart: ^0.55.2
   pie_chart: ^5.3.2
   workmanager: ^0.5.1
-  awesome_notifications: ^0.6.21
+  awesome_notifications: 0.8.3
   lottie: ^2.2.0
   url_launcher: ^6.1.10
 
